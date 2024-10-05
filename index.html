@@ -1,146 +1,405 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="My basic lyrics"content="Old love lyrics">
-  <meta name="Author" content="Franz Acebedo">
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="https://camo.githubusercontent.com/48d099290b4cb2d7937bcd96e8497cf1845b54a810a6432c70cf944b60b40c77/68747470733a2f2f7261776769742e636f6d2f676f72616e67616a69632f72656163742d69636f6e732f6d61737465722f72656163742d69636f6e732e737667">
-  <style>
-    body {
-    font-size: 20pt;
-    font-weight: bold;
-    background-color: lightskyblue;
-    color: white;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vuetify/2.3.0-beta.6/vuetify.min.js"></script>
+    
+    <style>
+        
+        @import url("https://fonts.googleapis.com/css?family=Cute+Font&display=swap");
+html,
+body {
+  width: 100%;
+  height: 100vw;
+  margin: 0;
 }
-pre{
-  text-align: center;
-  color:White;
-  border:10px solid green;overflow: auto;
-  margin: 15px;
-  border-radius:20px;
-  background-color:gray;
-  
+
+body {
+  color: #333;
+  font-family: "Cute Font", cursive;
+  overflow: hidden;
+  background-image: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
 }
-img{
-  border-radius:50%;
-  width:500px;
-  border:20px solid lightgreen;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
 }
-  </style>
+*:before,
+*:after {
+  content: "";
+  position: absolute;
+}
 
+.container {
+  margin: auto;
+}
 
-  <title>My lyrics</title>
-  
+.album {
+  transform-style: preserve-3d;
+  transition: 1s;
+  margin: auto;
+  width: 600px;
+  height: 700px;
+  transform: scale(0.5);
+  cursor: pointer;
+  position: relative;
+}
+.txt-Franz {
+  position: absolute;
+  top: 65%;
+  color: rgb(78, 78, 78);
+  left: 35%;
+  z-index: 100;
+  font-size: 5rem;
+}
+.album--open {
+  transform: translate(65px, 0) rotateX(35deg) rotateY(0deg) rotateZ(35deg)
+    scale(0.5);
+}
+.album__paper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: 1s;
+  transform-origin: 0 50%;
+  transform-style: preserve-3d;
+}
+.album__paper:not(.first) .album__page {
+  background: #ffbfd5de;
+  background-size: 100% 1.5em;
+}
+.album__paper:not(.first) .back {
+  background: #ffbfd5de;
+}
+.album__paper:nth-of-type(1) .back {
+  background: #0095a3;
+}
+.album__paper:nth-of-type(1) .album__page {
+  background: #0095a3;
+}
+.album__paper.open {
+  box-shadow: 0 1em 0 0 #aaa;
+  transform: rotateX(0) rotateY(-180deg) rotateZ(0);
+}
+.album__paper .album__page.front {
+  transition: 1s;
+  -webkit-transition: 1s;
+  transform-origin: 0 50%;
+  -webkit-transform-origin: 0 50%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  z-index: 2;
+}
+.album__paper .back {
+  transition: 1s;
+  -webkit-transition: 1s;
+  transform-origin: 0 50%;
+  -webkit-transform-origin: 0 50%;
+  background: #e1e1e1;
+}
+.album__top-title {
+  font-size: 100px;
+  line-height: 0.8;
+  padding: 20px;
+}
+.album__page {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transform: translateZ(0px);
+}
+.album__back {
+  width: 3em;
+  height: 700px;
+  background: #007e8a;
+  position: absolute;
+  left: -3em;
+  top: 0;
+  transform-origin: 100% 100%;
+  -webkit-transform-origin: 100% 100%;
+  transform: rotateY(-90deg) rotateX(0deg);
+  -webkit-transform: rotateY(-90deg) rotateX(0deg);
+}
+.album__shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 600px;
+  height: 700px;
+  background: transparent;
+  transform: translateZ(-3em);
+  -webkit-transform: translateZ(-3em);
+  box-shadow: 1em 1em 0px 0px #aaa;
+  z-index: 1;
+}
+.album__bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 600px;
+  height: 3em;
+  background: #d4d3d3;
+  transform-origin: 100% 100%;
+  -webkit-transform-origin: 100% 100%;
+  transform: rotateX(90deg);
+  -webkit-transform: rotateX(90deg);
+}
 
-</head>
+.cat-mark {
+  position: relative;
+  width: 200px;
+  height: 170px;
+  background: #333;
+  border-radius: 60% 60% 90px 90px;
+  margin: 150px auto auto;
+}
+.cat-mark:before,
+.cat-mark:after {
+  top: -25px;
+  width: 0;
+  height: 0;
+  border-bottom: 80px solid #333;
+  border-right: 50px solid transparent;
+  border-left: 50px solid transparent;
+  border-radius: 33px;
+}
+.cat-mark:before {
+  right: -20px;
+  transform: rotate(32deg);
+  -webkit-transform: rotate(32deg);
+}
+.cat-mark:after {
+  left: -20px;
+  transform: rotate(-32deg);
+  -webkit-transform: rotate(-32deg);
+}
 
-<body>
-  <div id="Head">
-  <center>
-  <h1>OLD LOVE</h1>
-  <image src="https://media.tenor.com/PGXshKPAUh4AAAAC/my-dress-up-darling-anime-love.gif"alt="anime gif">
-  <h3>Yuji and Putri Dahlia</h3>
-  <a href="https://m.youtube.com/watch?v=SctrVF37GAQ&pp=ygUIT2xkIGxvdmU%3D"target="/blank">
- <h5 style="color:gray;">original video</h5>
- </a>
-  </center>
-  <hr>
-  </div>
-  <h1 style="text-align:center;">Lyrics</h1>
-  <div id="lyrics">
-<pre >
-[00:19.05]When you were here
-  
-[00:21.12]The stars disappear
+.top-content {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
 
-[00:23.63]Nothing can outshine the dress that you wear
+.content {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 100px auto;
+  height: 100%;
+}
+.content__title {
+  grid-row: 1;
+  grid-column: 1/3;
+  font-size: 100px;
+  line-height: 0.8;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.content__img1 {
+  grid-row: 2/4;
+  grid-column: 1/2;
+  display: flex;
+  align-items: center;
+  flex-flow: column;
+  box-sizing: border-box;
+}
+.content__img1 img {
+  margin: auto;
+  width: 90%;
+  border: 10px solid #fff;
+  box-sizing: border-box;
+}
+.content__img2 {
+  grid-row: 3/4;
+  grid-column: 2/4;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+.content__img2 img {
+  margin: auto;
+  width: 80%;
+  border: 10px solid #fff;
+  box-sizing: border-box;
+}
+.content__img3 {
+  grid-row: 2;
+  grid-column: 2;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+.content__img3 img {
+  margin: auto;
+  width: 60%;
+  border: 10px solid #fff;
+  box-sizing: border-box;
+}
+.content__text {
+  width: 100%;
+  padding: 30px;
+  font-size: 30px;
+  box-sizing: border-box;
+}
 
-[00:28.96]We should be dancing
+@media screen and (max-width: 768px) {
+  body {
+    overflow: visible;
+  }
+}
 
-[00:31.72]'Cause girl you look stunning
+        
+    </style>
+    <title>My Album</title>
+  </head>
+  <body>
+    
+    <div id="app">
+      <div class="container">
+        <div class="album" :class="{'album--open': isOpenedTop}">
+          <div
+            class="album__paper"
+            :style="{zIndex: isOpenedTop ? 0 : items.length + 1 }"
+            :class="{'open': isOpenedTop}"
+            @click="topOpen(isOpenedTop)">
+            <div
+              class="album__page front"
+              :style="{transform: `translateZ(0.${items.length + 1}px)`}">
+              <div>
+                <div class="album__top-title">Album</div>
+                <p class="txt-Franz">Rheanna</p>
+                <div class="cat-mark"></div>
+              </div>
+            </div>
+            <div class="album__page back" :style="{zIndex: 0}"></div>
+            
+          </div>
+          <div
+            class="album__paper"
+            v-for="(page, idx) in items"
+            :key="idx + 1"
+            :style="{zIndex: page.isOpen ? idx + 1 : items.length + 1 - (idx + 1) }"
+            :class="{'open': page.isOpen}"
+            @click="idx + 1 === items.length ? reset() : open(idx, page.isOpen)">
+            <div
+              class="album__page front"
+              :style="{transform: `translateZ(0.${items.length + 1 - (idx + 1)}px)`}">
+              <div class="content">
+                <div class="content__title">{{ page.title }}</div>
+                <div class="content__img1">
+                  <img :src="page.img1" />
+                  <div class="content__text">{{ idx + 1 }}</div>
+                </div>
+                <div class="content__img2"><img :src="page.img2" /></div>
+                <div class="content__img3"><img :src="page.img3" /></div>
+              </div>
+            </div>
+            <div class="album__page back" :style="{zIndex: idx + 1}"></div>
+          </div>
+          <div class="album__back"></div>
+          <div class="album__bottom"></div>
+          <div class="album__shadow"></div>
+        </div>
+      </div>
+    </div>
+    
+    <audio  src="Mata.mp3" style="display:hidden;" autoplay loop> </audio>
+    <script>
+        
+        new Vue({
+  el: "#app",
+  data() {
+    return {
+      isOpenedTop: false,
+      items: [
+        {
+          img1: "Ganda.gif",
+          img2: "Ngiti.jpeg",
+          img3: "robloxxx.jpeg",
+          title: "Album No.1",
+          isOpen: false,
+        },
+        {
+          img1: "papacute.jpg",
+          img2: "Angry mood.jpeg",
+          img3: "Eyy.jpeg",
+          title: "Album No.2",
+          isOpen: false,
+        },
+        {
+          img1: "Ngek.jpeg",
+          img2: "ngekkk .jpeg",
+          img3:"airpods.jpeg",
+          title: "Album No.3",
+          isOpen: false,
+        },
+        {
+          img1: "panes.jpeg",
+          img2: "Wow.jpeg",
+          img3: "angas.jpeg",
+          title: "Album No.4",
+          isOpen: false,
+        },
+        {
+          img1: "facemask.jpg",
+          img2: "sh.jpg",
+          img3: "zzz.jpg",
+          title: "Album No.5",
+          isOpen: false,
+          },
+        {
+          img1: "isa.jpeg",
+          img2: "cow.jpg",
+          img3: "gg.jpeg",
+          title: "Album No.6",
+          isOpen: false,
+        }, 
+         {
+          img1: "Happy aripods.jpeg",
+          img2: "chinese.jpeg",
+          img3: "Ngek.jpeg",
+          title: "Album No.7",
+          isOpen: false,
+        }, 
+         {
+          img1: "Wow.jpeg",
+          img2: "Ganda.gif",
+          img3: "isa.jpeg",
+          title: "Album No.8",
+          isOpen: false,
+        }, 
+         
+      ],
+    };
+  },
+  methods: {
+    topOpen() {
+      this.isOpenedTop = !this.isOpenedTop;
+    },
 
-[00:34.30]Let's spend the night together till reach the morning
+    open(idx, isOpen) {
+      if (this.isOpenedTop) {
+        this.items[idx].isOpen = !isOpen;
+      }
+    },
 
-[00:39.38]Up and above
+    reset() {
+      this.items.forEach((item) => (item.isOpen = false));
+      this.isOpenedTop = false;
+    },
+  },
+});
 
-[00:42.14]Never enough
-
-[00:44.41]I want to hold your hand and show what is love
-
-[00:49.26]When you are smiling
-
-[00:52.03]And when you are laughing
-
-[00:54.54]We should keep dancing to treasure the feelings
-
-[00:59.35]Like it's the old love (it's the old love)
-
-[01:04.89]This is the way that we both wanna feel
-
-[01:09.94]Under the moonlight we made our first kiss
-
-[01:14.96]'Cause this is the moment that you made me feel
-
-[01:19.76]Like it's the old love (it's the old love)
-
-[01:25.33]Come on and hold me, I want you right here
-
-[01:30.11]Stay close to me so you don't feel the fear
-
-[01:35.40]I'll never let go 'cause I'm just right here
-
-[01:40.51]When I'm with you
-
-[01:42.77]It's like déjà vu
-
-[01:45.35]I realized that dreams really come true
-
-[01:50.29]We keep on talking for the moment we live in
-
-[01:55.45]Let's just keep drinking till the moon disappear
-
-[02:00.51]You are the one
-
-[02:03.27]The one that I want
-
-[02:05.54]The one that will stay by my side till I'm gone
-
-[02:10.39]The love of my life and I'll sacrifice
-
-[02:15.72]Just for the moment we last long forever
-
-[02:20.76]Like it's the old love (it's the old love)
-
-[02:25.80]This is the way that we both wanna feel
-
-[02:30.61]Under the moonlight we made our first kiss
-
-[02:35.59]'Cause this is the moment that you made me feel
-
-[02:40.77]Like it's the old love
-
-[02:46.38]Come on and hold me, I want you right here
-
-[02:51.19]Stay close to me so you don't feel the fear
-
-[02:56.23]I'll never let go 'cause I'm just right her
-
-[03:01.02]Like it's the old love
-
-[03:22.18]Like it's the old love
-
-[03:26.71]This is the way that we both wanna feel
-
-[03:31.76]Under the moonlight we made our first kiss
-
-[03:36.55]'Cause this is the moment that you made me feel
-
-[03:41.67]Like it's the old love
- 
-</pre>
-</div>
-</body>
+        
+    </script>
+  </body>
 </html>
